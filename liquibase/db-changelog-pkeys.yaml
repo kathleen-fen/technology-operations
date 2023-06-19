@@ -15,3 +15,67 @@ databaseChangeLog:
             constraintName: fabrics-pkey
             tableName: fabrics
             validate: true
+  - changeSet:
+      id: add-models-pkey
+      author: Kate Fenchenko
+      comment: Create models-pkey
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          primaryKeyExists:
+            primaryKeyName: models-pkey
+            tableName: models
+      changes:
+        - addPrimaryKey:
+            columnNames: id
+            constraintName: models-pkey
+            tableName: models
+            validate: true
+  - changeSet:
+      id: add-specialties-pkey
+      author: Kate Fenchenko
+      comment: Create specialties-pkey
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          primaryKeyExists:
+            primaryKeyName: specialties-pkey
+            tableName: specialties
+      changes:
+        - addPrimaryKey:
+            columnNames: id
+            constraintName: specialties-pkey
+            tableName: specialties
+            validate: true
+  - changeSet:
+      id: add-categories-pkey
+      author: Kate Fenchenko
+      comment: Create categories-pkey
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          primaryKeyExists:
+            primaryKeyName: categories-pkey
+            tableName: categories
+      changes:
+        - addPrimaryKey:
+            columnNames: id
+            constraintName: categories-pkey
+            tableName: categories
+            validate: true
+  - changeSet:
+      id: add-equipment-pkey
+      author: Kate Fenchenko
+      comment: Create equipment-pkey
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          primaryKeyExists:
+            primaryKeyName: equipment-pkey
+            tableName: equipment
+      changes:
+        - addPrimaryKey:
+            columnNames: id
+            constraintName: equipment-pkey
+            tableName: equipment
+            validate: true
