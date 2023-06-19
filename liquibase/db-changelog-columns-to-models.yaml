@@ -1,0 +1,63 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-to-models
+      author: Kate Fenchenko
+      comment: add columns to models table
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: models
+        not:
+          columnExists:
+            tableName: models
+            columnName: finising_stitch_frequency
+      changes:
+        addColumn:
+          tableName: models
+          columns:
+            - column:
+                name: finising_stitch_frequency
+                type: float
+            - column:
+                name: stitch_frequency
+                type: float
+            - column:
+                name: age_group
+                type: text
+            - column:
+                name: size_group
+                type: text
+            - column:
+                name: fabric_id
+                type: integer
+            - column:
+                name: created_on
+                type: timestamp without time zone
+  - changeSet:
+      id: add-default-now-date-constraint-created_on-models
+      author: Kathreen Fenchenko
+      comment: add default value to created-on column
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: models
+          columnExists:
+            tableName: models
+            columnName: created_on
+      changes:
+        addDefaultValue:
+          tableName: models
+          columnName: created_on
+          defaultValueComputed: "CURRENT_TIMESTAMP"
+  - changeSet:
+      id: add-fabrics-models-foreign-key
+      author: Kate Fenchenko
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: fabric_id
+            baseTableName: models
+            baseTableSchemaName: public
+            constraintName: fk_fabric_model
+            referencedColumnNames: id
+            referencedTableName: fabrics
+            validate: true

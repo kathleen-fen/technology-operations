@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - include:
+      file: db-changelog_01.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db-changelog_equipment.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db-changelog_fabrics.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db-changelog_categories.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db-changelog_specialties.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db-changelog-columns-to-models.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db-changelog-pkeys.yaml
+      relativeToChangelogFile: true

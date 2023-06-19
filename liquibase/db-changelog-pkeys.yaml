@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-fabrics-pkey
+      author: Kate Fenchenko
+      comment: Create fabrics-pkey
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          primaryKeyExists:
+            primaryKeyName: fabrics-pkey
+            tableName: fabrics
+      changes:
+        - addPrimaryKey:
+            columnNames: id
+            constraintName: fabrics-pkey
+            tableName: fabrics
+            validate: true

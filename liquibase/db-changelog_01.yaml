@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-models-id-sequence
+      author: Kathreen Fenchenko
+      comment: Create models_id_sequence
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          sequenceExists:
+            sequenceName: models_id_sequence
+      changes:
+        - createSequence:
+            incrementby: 1
+            maxValue: 2147483647
+            minValue: 1
+            schemaName: public
+            sequenceName: models_id_sequence
+            startValue: 1
+            cacheSize: 1
+  - changeSet:
+      id: create-models-table
+      author: Kathreen Fenchenko
+      comment: Create models table
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: models
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: integer
+              - column:
+                  name: name
+                  type: text
+            schemaName: public
+            tableName: models
+  - changeSet:
+      id: update-id-column-in-model-table
+      author: Kate Fenchenko
+      comment: update id column in model table with constraint and default value
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: models
+        columnExists:
+          tableName: models
+          columnName: id
+      changes:
+        - addNotNullConstraint:
+            columnDataType: integer
+            columnName: id
+            constraintName: id_NotNullable
+            schemaName: public
+            tableName: models
+            validate: true
+        - addDefaultValue:
+            columnDataType: integer
+            columnName: id
+            defaultValueSequenceNext: models_id_sequence
+            schemaName: public
+            tableName: models
