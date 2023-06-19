@@ -79,3 +79,19 @@ databaseChangeLog:
             constraintName: equipment-pkey
             tableName: equipment
             validate: true
+  - changeSet:
+      id: add-operations-pkey
+      author: Kate Fenchenko
+      comment: Create operations-pkey
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          primaryKeyExists:
+            primaryKeyName: operations-pkey
+            tableName: operations
+      changes:
+        - addPrimaryKey:
+            columnNames: id
+            constraintName: operations-pkey
+            tableName: operations
+            validate: true

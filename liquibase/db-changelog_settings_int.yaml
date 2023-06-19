@@ -1,0 +1,83 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-settings_int-id-sequence
+      author: Kate Fenchenko
+      comment: Create settings_int_id_sequence
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          sequenceExists:
+            sequenceName: settings_int_id_sequence
+      changes:
+        - createSequence:
+            incrementby: 1
+            maxValue: 2147483647
+            minValue: 1
+            schemaName: public
+            sequenceName: settings_int_id_sequence
+            startValue: 1
+            cacheSize: 1
+  - changeSet:
+      id: create-settings_int-table
+      author: Kathreen Fenchenko
+      comment: Create settings_int table
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: settings_int
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: integer
+              - column:
+                  name: name
+                  type: text
+            schemaName: public
+            tableName: settings_int
+  - changeSet:
+      id: update-id-column-in-settings_int-table
+      author: Kate Fenchenko
+      comment: update id column in settings_int table with constraint and default value
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: settings_int
+        columnExists:
+          tableName: settings_int
+          columnName: id
+      changes:
+        - addNotNullConstraint:
+            columnDataType: integer
+            columnName: id
+            constraintName: id_NotNullable
+            schemaName: public
+            tableName: settings_int
+            validate: true
+        - addDefaultValue:
+            columnDataType: integer
+            columnName: id
+            defaultValueSequenceNext: settings_int_id_sequence
+            schemaName: public
+            tableName: settings_int
+  - changeSet:
+      id: add-value-column-in-settings_int-table
+      author: Kate Fenchenko
+      comment: add value column in settings_int
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: settings_int
+        not:
+          columnExists:
+            tableName: settings_int
+            columnName: value
+      changes:
+        - addColumn:
+            tableName: settings_int
+            columns:
+              - column:
+                  name: value
+                  type: float

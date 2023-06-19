@@ -1,0 +1,53 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-folder-fields-to-models
+      author: Kate Fenchenko
+      comment: Add folder fields to models
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: models
+        not:
+          columnExists:
+            colunmName: is-folder
+            tableName: models
+        not:
+          columnExists:
+            colunmName: parent
+            tableName: models
+      changes:
+        - addColumn:
+            tableName: models
+            columns:
+              - column:
+                  name: is-folder
+                  type: boolean
+              - column:
+                  name: parent
+                  type: integer    
+  - changeSet:
+      id: add-folder-fields-to-operations
+      author: Kate Fenchenko
+      comment: Add folder fields to operations
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: operations
+        not:
+          columnExists:
+            colunmName: is-folder
+            tableName: operations
+        not:
+          columnExists:
+            colunmName: parent
+            tableName: operations
+      changes:
+        - addColumn:
+            tableName: operations
+            columns:
+              - column:
+                  name: is-folder
+                  type: boolean
+              - column:
+                  name: parent
+                  type: integer    

@@ -1,0 +1,148 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-operations-id-sequence
+      author: Kate Fenchenko
+      comment: Create operations_id_sequence
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          sequenceExists:
+            sequenceName: operations_id_sequence
+      changes:
+        - createSequence:
+            incrementby: 1
+            maxValue: 2147483647
+            minValue: 1
+            schemaName: public
+            sequenceName: operations_id_sequence
+            startValue: 1
+            cacheSize: 1
+  - changeSet:
+      id: create-operations-table
+      author: Kate Fenchenko
+      comment: Create operations table
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: operations
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: integer
+              - column:
+                  name: name
+                  type: text
+              - column:
+                  name: specialty_id
+                  type: integer
+              - column:
+                  name: category_id
+                  type: integer
+              - column:
+                  name: equipment_id
+                  type: integer
+              - column:
+                  name: adult_labor_cost
+                  type: float
+              - column:
+                  name: kid_labor_cost
+                  type: float
+              - column:
+                  name: order
+                  type: integer
+              - column:
+                  name: code
+                  type: text
+            schemaName: public
+            tableName: operations
+  - changeSet:
+      id: update-id-column-in-operations-table
+      author: Kate Fenchenko
+      comment: update id column in operations table with constraint and default value
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: operations
+        columnExists:
+          tableName: operations
+          columnName: id
+      changes:
+        - addNotNullConstraint:
+            columnDataType: integer
+            columnName: id
+            constraintName: id_NotNullable
+            schemaName: public
+            tableName: operations
+            validate: true
+        - addDefaultValue:
+            columnDataType: integer
+            columnName: id
+            defaultValueSequenceNext: operations_id_sequence
+            schemaName: public
+            tableName: operations
+  - changeSet:
+      id: add-created_on-column-to-operations
+      author: Kate Fenchenko
+      comment: add created_on column to operations
+      changes:
+        addColumn:
+          tableName: operations
+          columns:
+            - column:
+                name: created_on
+                type: timestamp without time zone
+  - changeSet:
+      id: add-default-now-date-constraint-created_on-operations
+      author: Kathreen Fenchenko
+      comment: add default value to created-on column to operations
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: operations
+          columnExists:
+            tableName: operations
+            columnName: created_on
+      changes:
+        addDefaultValue:
+          tableName: operations
+          columnName: created_on
+          defaultValueComputed: "CURRENT_TIMESTAMP"
+  - changeSet:
+      id: add-specialties-operations-foreign-key
+      author: Kate Fenchenko
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: specialty_id
+            baseTableName: operations
+            baseTableSchemaName: public
+            constraintName: fk_specialties_operations
+            referencedColumnNames: id
+            referencedTableName: specialties
+            validate: true
+  - changeSet:
+      id: add-categories-operations-foreign-key
+      author: Kate Fenchenko
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: category_id
+            baseTableName: operations
+            baseTableSchemaName: public
+            constraintName: fk_categories_operations
+            referencedColumnNames: id
+            referencedTableName: categories
+            validate: true
+  - changeSet:
+      id: add-equipment-operations-foreign-key
+      author: Kate Fenchenko
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: equipment_id
+            baseTableName: operations
+            baseTableSchemaName: public
+            constraintName: fk_equipment_operations
+            referencedColumnNames: id
+            referencedTableName: equipment
+            validate: true

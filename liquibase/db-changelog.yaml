@@ -20,3 +20,12 @@ databaseChangeLog:
   - include:
       file: db-changelog-pkeys.yaml
       relativeToChangelogFile: true
+  - include:
+      file: db-changelog_settings_int.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db-changelog_make_folders.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: db-changelog_operations.yaml
+      relativeToChangelogFile: true
