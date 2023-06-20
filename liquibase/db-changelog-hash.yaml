@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-extension-pgcrypto
+      author: Kate Fenchenko
+      comment: CREATE EXTENSION pgcrypto
+      preConditions:
+        onFail: MARK_RAN
+      changes:
+        - sql:
+            dbms: "postgresql"
+            sql: >-
+              CREATE EXTENSION IF NOT EXISTS pgcrypto
+              SCHEMA public
+              VERSION "1.3";

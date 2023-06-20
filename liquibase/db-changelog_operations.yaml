@@ -146,3 +146,14 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: equipment
             validate: true
+  - changeSet:
+      id: add-modified_on-column-to-operations
+      author: Kate Fenchenko
+      comment: add modified_on column to operations
+      changes:
+        addColumn:
+          tableName: operations
+          columns:
+            - column:
+                name: modified_on
+                type: timestamp without time zone

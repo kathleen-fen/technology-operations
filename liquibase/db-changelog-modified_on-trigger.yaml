@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-function-for-modified_on
+      author: Kate Fenchenko
+      comment: create function to update modified_on column
+      preConditions:
+        onFail: MARK_RAN
+      changes:
+        - sql:
+            dbms: "postgresql"
+            sql: >-
+              CREATE OR REPLACE FUNCTION update_modified_on_column()
+              RETURNS TRIGGER AS '
+              BEGIN
+              NEW.modified_on = now(); 
+              RETURN NEW;
+              END;
+              ' language 'plpgsql';
+  - changeSet:
+      id: add-trigger-for-update-operations
+      author: Kate Fenchenko
+      comment: add trigger for operations
+      preConditions:
+        onFail: MARK_RAN
+      changes:
+        - sql:
+            dbms: "postgresql"
+            sql: >-
+              CREATE TRIGGER update_operations_changetimestamp BEFORE UPDATE
+              ON operations FOR EACH ROW EXECUTE PROCEDURE 
+              update_modified_on_column();
