@@ -29,3 +29,16 @@ databaseChangeLog:
               CREATE TRIGGER update_operations_changetimestamp BEFORE UPDATE
               ON operations FOR EACH ROW EXECUTE PROCEDURE 
               update_modified_on_column();
+  - changeSet:
+      id: add-trigger-for-update-sequencws
+      author: Kate Fenchenko
+      comment: add trigger for sequences
+      preConditions:
+        onFail: MARK_RAN
+      changes:
+        - sql:
+            dbms: "postgresql"
+            sql: >-
+              CREATE TRIGGER update_sequences_changetimestamp BEFORE UPDATE
+              ON sequences FOR EACH ROW EXECUTE PROCEDURE 
+              update_modified_on_column();

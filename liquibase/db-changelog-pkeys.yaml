@@ -95,3 +95,19 @@ databaseChangeLog:
             constraintName: operations-pkey
             tableName: operations
             validate: true
+  - changeSet:
+      id: add-sequences-pkey
+      author: Kate Fenchenko
+      comment: Create sequences-pkey
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          primaryKeyExists:
+            primaryKeyName: sequences-pkey
+            tableName: sequences
+      changes:
+        - addPrimaryKey:
+            columnNames: id
+            constraintName: sequences-pkey
+            tableName: sequences
+            validate: true

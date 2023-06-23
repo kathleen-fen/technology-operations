@@ -50,4 +50,30 @@ databaseChangeLog:
                   type: boolean
               - column:
                   name: parent
-                  type: integer    
+                  type: integer
+  - changeSet:
+      id: add-folder-fields-to-sequences
+      author: Kate Fenchenko
+      comment: Add folder fields to sequences
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: sequences
+        not:
+          columnExists:
+            colunmName: is-folder
+            tableName: sequences
+        not:
+          columnExists:
+            colunmName: parent
+            tableName: sequences
+      changes:
+        - addColumn:
+            tableName: sequences
+            columns:
+              - column:
+                  name: is-folder
+                  type: boolean
+              - column:
+                  name: parent
+                  type: integer                     

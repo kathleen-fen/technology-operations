@@ -1,0 +1,196 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-sequences-id-sequence
+      author: Kate Fenchenko
+      comment: Create sequences_id_sequence
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          sequenceExists:
+            sequenceName: sequences_id_sequence
+      changes:
+        - createSequence:
+            incrementby: 1
+            maxValue: 2147483647
+            minValue: 1
+            schemaName: public
+            sequenceName: sequences_id_sequence
+            startValue: 1
+            cacheSize: 1
+  - changeSet:
+      id: create-sequences-table
+      author: Kate Fenchenko
+      comment: Create sequences table
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: sequences
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: integer
+              - column:
+                  name: name
+                  type: text
+              - column:
+                  name: operation_ctid
+                  type: text
+              - column:
+                  name: operation_xmin
+                  type: text
+              - column:
+                  name: seamWidth
+                  type: float
+              - column:
+                  name: specialty_id
+                  type: integer
+              - column:
+                  name: category_id
+                  type: integer
+              - column:
+                  name: equipment_id
+                  type: integer
+              - column:
+                  name: labor_act
+                  type: integer
+              - column:
+                  name: item_labor_act
+                  type: integer
+              - column:
+                  name: multiplicity
+                  type: float
+              - column:
+                  name: cost
+                  type: float
+              - column:
+                  name: order
+                  type: integer
+              - column:
+                  name: code
+                  type: text
+            schemaName: public
+            tableName: sequences
+  - changeSet:
+      id: update-id-column-in-sequences-table
+      author: Kate Fenchenko
+      comment: update id column in sequences table with constraint and default value
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: sequences
+        columnExists:
+          tableName: sequences
+          columnName: id
+      changes:
+        - addNotNullConstraint:
+            columnDataType: integer
+            columnName: id
+            constraintName: id_NotNullable
+            schemaName: public
+            tableName: sequences
+            validate: true
+        - addDefaultValue:
+            columnDataType: integer
+            columnName: id
+            defaultValueSequenceNext: sequences_id_sequence
+            schemaName: public
+            tableName: sequences
+  - changeSet:
+      id: add-created_on-column-to-sequences
+      author: Kate Fenchenko
+      comment: add created_on column to sequences
+      changes:
+        addColumn:
+          tableName: sequences
+          columns:
+            - column:
+                name: created_on
+                type: timestamp without time zone
+  - changeSet:
+      id: add-default-now-date-constraint-created_on-sequences
+      author: Kate Fenchenko
+      comment: add default value to created-on column to sequences
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: sequences
+          columnExists:
+            tableName: sequences
+            columnName: created_on
+      changes:
+        addDefaultValue:
+          tableName: sequences
+          columnName: created_on
+          defaultValueComputed: "CURRENT_TIMESTAMP"
+  - changeSet:
+      id: add-specialties-sequences-foreign-key
+      author: Kate Fenchenko
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: specialty_id
+            baseTableName: sequences
+            baseTableSchemaName: public
+            constraintName: fk_specialties_sequences
+            referencedColumnNames: id
+            referencedTableName: specialties
+            validate: true
+  - changeSet:
+      id: add-categories-sequences-foreign-key
+      author: Kate Fenchenko
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: category_id
+            baseTableName: sequences
+            baseTableSchemaName: public
+            constraintName: fk_categories_sequences
+            referencedColumnNames: id
+            referencedTableName: categories
+            validate: true
+  - changeSet:
+      id: add-equipment-sequences-foreign-key
+      author: Kate Fenchenko
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: equipment_id
+            baseTableName: sequences
+            baseTableSchemaName: public
+            constraintName: fk_equipment_sequences
+            referencedColumnNames: id
+            referencedTableName: equipment
+            validate: true
+  - changeSet:
+      id: add-operation_id-column-to-sequences
+      author: Kate Fenchenko
+      changes:
+        - addColumn:
+            tableName: sequences
+            columns:
+              - column:
+                  name: operation_id
+                  type: integer
+  - changeSet:
+      id: add-operations-sequences-foreign-key
+      author: Kate Fenchenko
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: operation_id
+            baseTableName: sequences
+            baseTableSchemaName: public
+            constraintName: fk_operations_sequences
+            referencedColumnNames: id
+            referencedTableName: operations
+            validate: true
+  - changeSet:
+      id: add-modified_on-column-to-sequences
+      author: Kate Fenchenko
+      comment: add modified_on column to sequences
+      changes:
+        addColumn:
+          tableName: sequences
+          columns:
+            - column:
+                name: modified_on
+                type: timestamp without time zone
