@@ -1,28 +1,22 @@
-import {
-  Liquibase,
-  LiquibaseLogLevels,
-  POSTGRESQL_DEFAULT_CONFIG,
-} from "liquibase";
-import express from "express";
+import { client } from "./connection.js";
+import app from "./app.js";
+import dotenv from "dotenv";
 
-const myConfig = {
-  ...POSTGRESQL_DEFAULT_CONFIG,
-  changeLogFile: "./changelog.xml",
-  url: "jdbc:postgresql://localhost:5432/postgres",
-  username: "postgres",
-  password: "postgres",
-  liquibaseSchemaName: "public",
-  logLevel: LiquibaseLogLevels.Off,
+dotenv.config();
+
+const port = process.env.PORT || 3001;
+
+const main = async () => {
+  try {
+    await client.connect();
+    app.get("/", function (req, res) {
+      res.send("Hello World");
+    });
+    app.listen(port, () => {
+      console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+    });
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+  }
 };
-const inst = new Liquibase(myConfig);
-
-//inst.status();
-const app = express();
-
-app.get("/", function (req, res) {
-  res.send("Hello World");
-});
-
-app.listen(3000, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:3000`);
-});
+main();
