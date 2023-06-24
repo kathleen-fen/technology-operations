@@ -1,4 +1,4 @@
-import { client } from "./connection.js";
+import { sequelize } from "./connection.js";
 import app from "./app.js";
 import dotenv from "dotenv";
 
@@ -8,7 +8,9 @@ const port = process.env.PORT || 3001;
 
 const main = async () => {
   try {
-    await client.connect();
+    await sequelize.authenticate();
+
+    console.log("Connection has been established successfully.");
     app.get("/", function (req, res) {
       res.send("Hello World");
     });
