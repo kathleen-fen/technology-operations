@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-notnull-unique-constraint-to-code-operations
+      author: Kate Fenchenko
+      comment: add notnull unique constraint to cone in operations table
+      preConditions:
+        onFail: MARK_RAN
+        tableExists:
+          tableName: operations
+        columnExists:
+          tableName: operations
+          columnName: code
+      changes:
+        - addNotNullConstraint:
+            columnDataType: text
+            columnName: code
+            constraintName: id_NotNullable
+            schemaName: public
+            tableName: operations
+            validate: true
+        - addUniqueConstraint:
+            columnNames: code
+            constraintName: code_unique
+            schemaName: public
+            tableName: operations
+            validate: true
