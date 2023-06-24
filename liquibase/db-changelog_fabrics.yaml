@@ -89,3 +89,49 @@ databaseChangeLog:
             sequenceName: fabrics_id_sequence
             startValue: 1
             cacheSize: 1
+  - changeSet:
+      id: add-createdAt-updatedAt-columns-to-fabrics
+      author: Kate Fenchenko
+      comment: add createdAt and updatedAt columns to fabrics
+      changes:
+        addColumn:
+          tableName: fabrics
+          columns:
+            - column:
+                name: createdAt
+                type: timestamp without time zone
+        addColumn:
+          tableName: fabrics
+          columns:
+            - column:
+                name: updatedAt
+                type: timestamp without time zone
+  - changeSet:
+      id: add-createdAt-column-to-fabrics
+      author: Kate Fenchenko
+      comment: add createdAt column to fabrics
+      changes:
+        addColumn:
+          tableName: fabrics
+          columns:
+            - column:
+                name: createdAt
+                type: timestamp without time zone
+  -  changeSet:  
+      id:  rename-createdAt-column-fabrics  
+      author:  Kate Fenchenko 
+      changes:  
+      -  renameColumn:  
+          newColumnName:  created_on
+          oldColumnName:  createdAt  
+          tableName:  fabrics 
+  -  changeSet:  
+      id:  rename-updateddAt-column-fabrics  
+      author:  Kate Fenchenko 
+      changes:  
+      -  renameColumn:  
+          newColumnName:  modified_on
+          oldColumnName:  updatedAt  
+          tableName:  fabrics                      
+                            
+            
