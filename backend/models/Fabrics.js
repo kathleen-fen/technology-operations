@@ -8,6 +8,7 @@ const Fabrics = sequelize.define(
       type: DataTypes.INTEGER,
       primaryKey: true,
       allowNull: false,
+      autoIncrement: true,
     },
     name: {
       type: DataTypes.TEXT,
@@ -17,7 +18,8 @@ const Fabrics = sequelize.define(
     },
   },
   {
-    timestamps: false,
+    createdAt: "created_on",
+    updatedAt: "modified_on",
   }
 );
 
