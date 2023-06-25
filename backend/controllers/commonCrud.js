@@ -1,6 +1,10 @@
+import { Equipment } from "../models/Equipment.js";
 import { Fabrics } from "../models/Fabrics.js";
 
-const routeMap = new Map([["/fabrics", Fabrics]]);
+const routeMap = new Map([
+  ["/fabrics", Fabrics],
+  ["/equipment", Equipment],
+]);
 export const commonRouteFilters = routeMap.keys();
 
 export const getAll = async (req, res, _next) => {
