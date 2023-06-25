@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import fabricsRoutes from "./routes/fabrics.js";
+import commonRoutes from "./routes/commonRoutes.js";
+import { commonRouteFilters } from "./controllers/commonCrud.js";
 
 const corsOptions = {
   origin: "*",
@@ -11,6 +12,8 @@ const corsOptions = {
 const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use("/fabrics", fabricsRoutes);
+for (const filter of commonRouteFilters) {
+  app.use(filter, commonRoutes);
+}
 
 export default app;
