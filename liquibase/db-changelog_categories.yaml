@@ -74,3 +74,25 @@ databaseChangeLog:
             defaultValueSequenceNext: fabrics_id_sequence
             schemaName: public
             tableName: categories
+  - changeSet:
+      id: add-created_on-column-to-categories
+      author: Kate Fenchenko
+      comment: add created_on column to categories
+      changes:
+        addColumn:
+          tableName: categories
+          columns:
+            - column:
+                name: created_on
+                type: timestamp without time zone
+  - changeSet:
+      id: add-modified_on-column-to-categories
+      author: Kate Fenchenko
+      comment: add modified_on column to categories
+      changes:
+        addColumn:
+          tableName: categories
+          columns:
+            - column:
+                name: modified_on
+                type: timestamp without time zone
