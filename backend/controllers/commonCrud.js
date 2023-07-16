@@ -1,9 +1,15 @@
 import { Equipment } from "../models/Equipment.js";
 import { Fabrics } from "../models/Fabrics.js";
+import { Specialties } from "../models/Specialties.js";
+import { Categories } from "../models/Categories.js";
+import { SettingsInt } from "../models/SettingsInt.js";
 
 const routeMap = new Map([
   ["/fabrics", Fabrics],
   ["/equipment", Equipment],
+  ["/specialties", Specialties],
+  ["/categories", Categories],
+  ["/settings_int", SettingsInt],
 ]);
 export const commonRouteFilters = routeMap.keys();
 
