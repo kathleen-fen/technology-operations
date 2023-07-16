@@ -111,3 +111,19 @@ databaseChangeLog:
             constraintName: sequences-pkey
             tableName: sequences
             validate: true
+  - changeSet:
+      id: add-users-pkey
+      author: Kate Fenchenko
+      comment: Create users-pkey
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          primaryKeyExists:
+            primaryKeyName: users-pkey
+            tableName: users
+      changes:
+        - addPrimaryKey:
+            columnNames: id
+            constraintName: users-pkey
+            tableName: users
+            validate: true

@@ -41,3 +41,6 @@ databaseChangeLog:
   - include:
       file: db-changelog_notnull_unique.yaml
       relativeToChangelogFile: true
+  - include:
+      file: db-changelog_users.yaml
+      relativeToChangelogFile: true
