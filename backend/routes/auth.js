@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { login, refreshToken } from "../controllers/auth.js";
+import { login, logout, refreshToken } from "../controllers/auth.js";
 
 const router = Router();
 
 router.post("/login", login);
 router.post("/refreshToken", refreshToken);
+router.delete("/logout", logout);
 
 /* router.get("/", getAll);
 router.post("/add", createItem);

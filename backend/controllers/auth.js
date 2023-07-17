@@ -28,13 +28,18 @@ export const login = async (req, res, next) => {
 };
 export const refreshToken = async (req, res, _next) => {
   if (!refreshTokens.includes(req.body.token))
-    res.status(400).send("Refresh Token Invalid");
+    return res.status(400).send("Refresh Token Invalid");
   refreshTokens = refreshTokens.filter((c) => c != req.body.token);
   //remove the old refreshToken from the refreshTokens list
   const accessToken = generateAccessToken({ user: req.body.name });
   const refreshToken = generateRefreshToken({ user: req.body.name });
   //generate new accessToken and refreshTokens
   res.json({ accessToken: accessToken, refreshToken: refreshToken });
+};
+export const logout = (req, res) => {
+  refreshTokens = refreshTokens.filter((c) => c != req.body.token);
+  //remove the old refreshToken from the refreshTokens list
+  res.status(204).send("Logged out!");
 };
 function generateAccessToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
