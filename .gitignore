@@ -12,7 +12,7 @@ front_end/.pnp
 /coverage
 
 # production
-front_end/build
+frontend/build
 
 # misc
 .DS_Store
@@ -20,6 +20,8 @@ front_end/build
 .env.development.local
 .env.test.local
 .env.production.local
+.env
+backend/.env
 
 npm-debug.log*
 yarn-debug.log*

@@ -3,6 +3,7 @@ import cors from "cors";
 import commonRoutes from "./routes/commonRoutes.js";
 import { commonRouteFilters } from "./controllers/commonCrud.js";
 import userRoutes from "./routes/users.js";
+import authRoutes from "./routes/auth.js";
 
 const corsOptions = {
   origin: "*",
@@ -17,5 +18,6 @@ for (const filter of commonRouteFilters) {
   app.use(filter, commonRoutes);
 }
 app.use("/users", userRoutes);
+app.use(authRoutes);
 
 export default app;
