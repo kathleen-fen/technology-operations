@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { login } from "../controllers/auth.js";
+import { login, refreshToken } from "../controllers/auth.js";
 
 const router = Router();
 
 router.post("/login", login);
+router.post("/refreshToken", refreshToken);
 
 /* router.get("/", getAll);
 router.post("/add", createItem);
