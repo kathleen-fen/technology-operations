@@ -3,6 +3,7 @@ import { Fabrics } from "../models/Fabrics.js";
 import { Specialties } from "../models/Specialties.js";
 import { Categories } from "../models/Categories.js";
 import { SettingsInt } from "../models/SettingsInt.js";
+import { HTTP404Error } from "../utilities/errors/Http404Error.js";
 
 const routeMap = new Map([
   ["/fabrics", Fabrics],
@@ -51,7 +52,8 @@ export const deleteItem = async (req, res, next) => {
     const { id } = req.params;
     let item = await routeMap.get(req.baseUrl).findByPk(id);
     if (!item) {
-      return res.status(400).send(`Item does not exists`);
+      const error = new HTTP404Error("Item not found!");
+      return next(error);
     }
     const result = await routeMap.get(req.baseUrl).destroy({
       where: {
