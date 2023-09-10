@@ -116,7 +116,7 @@ const TreeNode = ({ node }: TreeNodePropsType) => {
       {hasChild && childVisible && (
         <div>
           <ul>
-            <TreeView data={node.children!} />
+            <TreeView data={node.children!} folderIconSettings={node.folderIconSettings} itemIconSettings={node.itemIconSettings} />
           </ul>
         </div>
       )}

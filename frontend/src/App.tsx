@@ -16,7 +16,7 @@ function App() {
       </div>
       <FontAwesomeIcon icon="check-square" />
       Your <FontAwesomeIcon icon="coffee" /> is hot and ready!
-      <TreeView data={treeData}/>
+      <TreeView data={treeData} folderIconSettings={{color: "#333333"}}/>
      
     </>
   )
