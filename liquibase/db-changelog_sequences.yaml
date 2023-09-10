@@ -194,3 +194,11 @@ databaseChangeLog:
             - column:
                 name: modified_on
                 type: timestamp without time zone
+  - changeSet:
+      id: rename-is-folder-column-sequences
+      author: Kate Fenchenko
+      changes:
+        - renameColumn:
+            newColumnName: is_folder
+            oldColumnName: is-folder
+            tableName: sequences

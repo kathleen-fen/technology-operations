@@ -62,3 +62,41 @@ databaseChangeLog:
             defaultValueSequenceNext: equipment_id_sequence
             schemaName: public
             tableName: equipment
+  - changeSet:
+      id: add-created_at-column-to-equipment
+      author: Kate Fenchenko
+      comment: add created_at column to equipment
+      changes:
+        addColumn:
+          tableName: equipment
+          columns:
+            - column:
+                name: created_at
+                type: timestamp without time zone
+  - changeSet:
+      id: add-updated_at-column-to-equipment
+      author: Kate Fenchenko
+      comment: add updated_at column to equipment
+      changes:
+        addColumn:
+          tableName: equipment
+          columns:
+            - column:
+                name: updated_at
+                type: timestamp without time zone
+  - changeSet:
+      id: rename-created_at-column-equipment
+      author: Kate Fenchenko
+      changes:
+        - renameColumn:
+            newColumnName: created_on
+            oldColumnName: created_at
+            tableName: equipment
+  - changeSet:
+      id: rename-updated_at-column-equipment
+      author: Kate Fenchenko
+      changes:
+        - renameColumn:
+            newColumnName: modified_on
+            oldColumnName: updated_at
+            tableName: equipment

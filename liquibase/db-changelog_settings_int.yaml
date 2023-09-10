@@ -81,3 +81,25 @@ databaseChangeLog:
               - column:
                   name: value
                   type: float
+  - changeSet:
+      id: add-created_on-column-to-settings_int
+      author: Kate Fenchenko
+      comment: add created_on column to settings_int
+      changes:
+        addColumn:
+          tableName: settings_int
+          columns:
+            - column:
+                name: created_on
+                type: timestamp without time zone
+  - changeSet:
+      id: add-modified_on-column-to-settings_int
+      author: Kate Fenchenko
+      comment: add modified_on column to settings_int
+      changes:
+        addColumn:
+          tableName: settings_int
+          columns:
+            - column:
+                name: modified_on
+                type: timestamp without time zone
