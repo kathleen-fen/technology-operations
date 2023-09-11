@@ -16,69 +16,81 @@ type TreeNodeType = {
   key: string
   label: string
   title: string
-  icon?: string,
+  icon?: string
   folderIconSettings?: folderIconType
   itemIconSettings?: itemIconType
   children?: Array<TreeNodeType>
 }
 type TreeNodePropsType = {
-  node: TreeNodeType,
+  node: TreeNodeType
 }
 type TreeViewPropsType = {
-  key?: string,
-  label?: string,
-  title?: string,
-  data: Array<TreeNodeType>,
+  key?: string
+  label?: string
+  title?: string
+  data: Array<TreeNodeType>
   folderIconSettings?: folderIconType
   itemIconSettings?: itemIconType
 }
 const TreeViewStyled = styled.div`
   padding-left: 10px;
 `
-const Icon = styled.div<{ iconColor: string  }>`
+const Icon = styled.div<{ iconColor: string }>`
   margin-right: 5px;
-  color: ${props => props.iconColor};
+  color: ${(props) => props.iconColor};
 `
 const defaultTreeViewProps = {
   folderIconSettings: {
     icon: 'folder',
     openIcon: 'folder-open',
-    color: 'yellowgreen'
+    color: 'yellowgreen',
   },
   itemIconSettings: {
     icon: 'file',
-    color: "#cccccc"
-  }
-} 
+    color: '#cccccc',
+  },
+}
 
-const TreeView = ({data=[],folderIconSettings,itemIconSettings}: TreeViewPropsType) => {
-
-  if(!folderIconSettings) {
-    folderIconSettings=defaultTreeViewProps.folderIconSettings
+const TreeView = ({
+  data = [],
+  folderIconSettings,
+  itemIconSettings,
+}: TreeViewPropsType) => {
+  if (!folderIconSettings) {
+    folderIconSettings = defaultTreeViewProps.folderIconSettings
   } else {
-    /* folderIconSettings = {
-      icon: folderIconSettings.icon?folderIconSettings.icon:defaultTreeViewProps.folderIconSettings.icon,
-      openIcon: folderIconSettings.openIcon?folderIconSettings.openIcon:defaultTreeViewProps.folderIconSettings.openIcon,
-      color: folderIconSettings.color?folderIconSettings.color:defaultTreeViewProps.folderIconSettings.color,
-    } */
-    folderIconSettings = {...defaultTreeViewProps.folderIconSettings, ...folderIconSettings}
+    folderIconSettings = {
+      ...defaultTreeViewProps.folderIconSettings,
+      ...folderIconSettings,
+    }
   }
 
-  if(!itemIconSettings) {
-    itemIconSettings=defaultTreeViewProps.itemIconSettings
+  if (!itemIconSettings) {
+    itemIconSettings = defaultTreeViewProps.itemIconSettings
   } else {
-    /* itemIconSettings={
-      icon: itemIconSettings.icon?itemIconSettings.icon:defaultTreeViewProps.itemIconSettings.icon,
-      color: itemIconSettings.color?itemIconSettings.color:defaultTreeViewProps.itemIconSettings.color
-    } */
-    itemIconSettings={...defaultTreeViewProps.itemIconSettings, ...itemIconSettings}
+    itemIconSettings = {
+      ...defaultTreeViewProps.itemIconSettings,
+      ...itemIconSettings,
+    }
   }
 
   return (
     <TreeViewStyled>
       <ul>
-        {data.map((tree:TreeNodeType) => (
-          <TreeNode node={{...tree, folderIconSettings:{...folderIconSettings, ...tree.folderIconSettings}, itemIconSettings:{...itemIconSettings, ...tree.itemIconSettings}}} />
+        {data.map((tree: TreeNodeType) => (
+          <TreeNode
+            node={{
+              ...tree,
+              folderIconSettings: {
+                ...folderIconSettings,
+                ...tree.folderIconSettings,
+              },
+              itemIconSettings: {
+                ...itemIconSettings,
+                ...tree.itemIconSettings,
+              },
+            }}
+          />
         ))}
       </ul>
     </TreeViewStyled>
@@ -102,7 +114,13 @@ const TreeNode = ({ node }: TreeNodePropsType) => {
       <TreeNodeStyled onClick={() => setChildVisiblity((v) => !v)}>
         {hasChild ? (
           <Icon iconColor={node.folderIconSettings!.color!}>
-            <FontAwesomeIcon icon={childVisible ? node.folderIconSettings!.openIcon as IconProp : node.folderIconSettings!.icon as IconProp}/>
+            <FontAwesomeIcon
+              icon={
+                childVisible
+                  ? (node.folderIconSettings!.openIcon as IconProp)
+                  : (node.folderIconSettings!.icon as IconProp)
+              }
+            />
           </Icon>
         ) : (
           <Icon iconColor={node.itemIconSettings!.color!}>
@@ -116,7 +134,11 @@ const TreeNode = ({ node }: TreeNodePropsType) => {
       {hasChild && childVisible && (
         <div>
           <ul>
-            <TreeView data={node.children!} folderIconSettings={node.folderIconSettings} itemIconSettings={node.itemIconSettings} />
+            <TreeView
+              data={node.children!}
+              folderIconSettings={node.folderIconSettings}
+              itemIconSettings={node.itemIconSettings}
+            />
           </ul>
         </div>
       )}
