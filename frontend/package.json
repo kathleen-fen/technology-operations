@@ -10,7 +10,7 @@
     "lint:scripts": "eslint --ext .ts,.tsx src",
     "lint:styles": "stylelint \"src/**/*.css\"",
     "preview": "vite preview",
-    "test": "jest"
+    "test": "jest --watchAll"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",

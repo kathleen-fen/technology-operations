@@ -35,10 +35,13 @@ type TreeViewPropsType = {
 const TreeViewStyled = styled.div`
   padding-left: 10px;
 `
-const Icon = styled.div<{ iconColor: string }>`
+const Icon = styled.div.withConfig({
+  shouldForwardProp: (prop) => prop != 'iconColor',
+})<{ iconColor: string }>`
   margin-right: 5px;
   color: ${(props) => props.iconColor};
 `
+
 const defaultTreeViewProps = {
   folderIconSettings: {
     icon: 'folder',
@@ -79,6 +82,7 @@ const TreeView = ({
       <ul>
         {data.map((tree: TreeNodeType) => (
           <TreeNode
+            key={tree.key}
             node={{
               ...tree,
               folderIconSettings: {
