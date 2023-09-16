@@ -1,6 +1,6 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
 
 type folderIconType = {
@@ -17,6 +17,7 @@ type TreeNodeType = {
   label: string
   title: string
   icon?: string
+  isFolder?:boolean;
   folderIconSettings?: folderIconType
   itemIconSettings?: itemIconType
   children?: Array<TreeNodeType>
@@ -110,6 +111,7 @@ const TreeNodeStyled = styled.div`
 
 const TreeNode = ({ node }: TreeNodePropsType) => {
   const [childVisible, setChildVisiblity] = useState(false)
+  useEffect(() => {}, [])
 
   const hasChild = node.children ? true : false
 
