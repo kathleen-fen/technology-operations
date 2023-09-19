@@ -2,14 +2,15 @@ declare namespace models {
   interface Dictionary {
     id: number
     name: string
+    isFolder?: boolean
+    parent?: number
+    childeren?: Dictionary[]
   }
   interface Models extends Dictionary {
     finisingStitchFrequency?: number
     stitchFrequency?: number
     ageGroup?: string
     sizeGroup?: string
-    isFolder?: boolean
-    parent?: number
   }
   // alternatively we can (delete one of them)
   type Dictionary = {
