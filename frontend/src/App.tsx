@@ -8,16 +8,13 @@ import { useQuery } from 'react-query'
 import { getModels } from './api'
 
 function App() {
-  const treeQuery = useQuery([], () => getModels())
+  const treeQuery = useQuery(['tree'], () => getModels())
   const newData = treeQuery.data
 
   return (
     <>
       <GlobalStyle />
-      <div>
-        <h1>Test React Query</h1>
-        {treeQuery.isLoading ? 'Loading...' : JSON.stringify(newData)}
-      </div>
+      {treeQuery.isLoading ? <p>Loading...</p> : JSON.stringify(newData)}
       <div>
         App component
         <FontAwesomeIcon icon="caret-right" />
