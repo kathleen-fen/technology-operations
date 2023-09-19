@@ -2,6 +2,8 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import { styled } from 'styled-components'
+import { useQuery } from 'react-query'
+import { treeData } from './mockTreeData'
 
 type folderIconType = {
   icon?: string
@@ -12,24 +14,17 @@ type itemIconType = {
   icon?: string
   color?: string
 }
-type TreeNodeType = {
-  key: string
-  label: string
-  title: string
-  icon?: string
-  isFolder?:boolean;
+type TreeNodeType = models.Dictionary & {
+  cb: (parent?: number) => Promise<Array<models.Dictionary>>
   folderIconSettings?: folderIconType
   itemIconSettings?: itemIconType
-  children?: Array<TreeNodeType>
 }
 type TreeNodePropsType = {
   node: TreeNodeType
 }
 type TreeViewPropsType = {
-  key?: string
-  label?: string
-  title?: string
-  data: Array<TreeNodeType>
+  cb: (parent?: number) => Promise<Array<models.Dictionary>>
+  parent?: number
   folderIconSettings?: folderIconType
   itemIconSettings?: itemIconType
 }
@@ -56,7 +51,8 @@ const defaultTreeViewProps = {
 }
 
 const TreeView = ({
-  data = [],
+  cb,
+  parent,
   folderIconSettings,
   itemIconSettings,
 }: TreeViewPropsType) => {
@@ -77,28 +73,37 @@ const TreeView = ({
       ...itemIconSettings,
     }
   }
+  const treeQuery = useQuery(['tree'], () => cb(parent), {
+    staleTime: 1000 * 60,
+  })
 
   return (
-    <TreeViewStyled>
-      <ul>
-        {data.map((tree: TreeNodeType) => (
-          <TreeNode
-            key={tree.key}
-            node={{
-              ...tree,
-              folderIconSettings: {
-                ...folderIconSettings,
-                ...tree.folderIconSettings,
-              },
-              itemIconSettings: {
-                ...itemIconSettings,
-                ...tree.itemIconSettings,
-              },
-            }}
-          />
-        ))}
-      </ul>
-    </TreeViewStyled>
+    <>
+      {treeQuery.isLoading && !treeQuery.isIdle ? (
+        <p>Loading...</p>
+      ) : (
+        <TreeViewStyled>
+          {/* <ul>
+      {treeQuery.data.map((tree: TreeNodeType) => (
+        <TreeNode
+          key={tree.key}
+          node={{
+            ...tree,
+            folderIconSettings: {
+              ...folderIconSettings,
+              ...tree.folderIconSettings,
+            },
+            itemIconSettings: {
+              ...itemIconSettings,
+              ...tree.itemIconSettings,
+            },
+          }}
+        />
+      ))}
+    </ul> */}
+        </TreeViewStyled>
+      )}
+    </>
   )
 }
 
