@@ -1,9 +1,8 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { styled } from 'styled-components'
 import { useQuery } from 'react-query'
-import { treeData } from './mockTreeData'
 
 type folderIconType = {
   icon?: string
@@ -14,13 +13,10 @@ type itemIconType = {
   icon?: string
   color?: string
 }
-type TreeNodeType = models.Dictionary & {
-  cb: (parent?: number) => Promise<Array<models.Dictionary>>
-  folderIconSettings?: folderIconType
-  itemIconSettings?: itemIconType
-}
+
 type TreeNodePropsType = {
-  node: TreeNodeType
+  cb: (parent?: number) => Promise<Array<models.Dictionary>>
+  node: models.Dictionary
 }
 type TreeViewPropsType = {
   cb: (parent?: number) => Promise<Array<models.Dictionary>>
@@ -83,6 +79,26 @@ const TreeView = ({
         <p>Loading...</p>
       ) : (
         <TreeViewStyled>
+          <ul>
+            {treeQuery.data &&
+              treeQuery.data.map((tree: models.Dictionary) => (
+                <TreeNode
+                  key={tree.id}
+                  cb={cb}
+                  node={{
+                    ...tree,
+                    folderIconSettings: {
+                      ...folderIconSettings,
+                      ...tree.folderIconSettings,
+                    },
+                    itemIconSettings: {
+                      ...itemIconSettings,
+                      ...tree.itemIconSettings,
+                    },
+                  }}
+                />
+              ))}
+          </ul>
           {/* <ul>
       {treeQuery.data.map((tree: TreeNodeType) => (
         <TreeNode
@@ -114,16 +130,15 @@ const TreeNodeStyled = styled.div`
   padding-left: 10px;
 `
 
-const TreeNode = ({ node }: TreeNodePropsType) => {
-  const [childVisible, setChildVisiblity] = useState(false)
-  useEffect(() => {}, [])
+const TreeNode = ({ cb, node }: TreeNodePropsType) => {
+  const [childVisible, setChildVisiblity] = useState<boolean>(false)
 
-  const hasChild = node.children ? true : false
+  //const hasChild = node.children ? true : false
 
   return (
     <li>
       <TreeNodeStyled onClick={() => setChildVisiblity((v) => !v)}>
-        {hasChild ? (
+        {node.isFolder ? (
           <Icon iconColor={node.folderIconSettings!.color!}>
             <FontAwesomeIcon
               icon={
@@ -139,14 +154,15 @@ const TreeNode = ({ node }: TreeNodePropsType) => {
           </Icon>
         )}
 
-        <div>{node.label}</div>
+        <div>{node.name}</div>
       </TreeNodeStyled>
 
-      {hasChild && childVisible && (
+      {node.isFolder && childVisible && (
         <div>
           <ul>
             <TreeView
-              data={node.children!}
+              cb={cb}
+              parent={node.id}
               folderIconSettings={node.folderIconSettings}
               itemIconSettings={node.itemIconSettings}
             />
@@ -156,5 +172,5 @@ const TreeNode = ({ node }: TreeNodePropsType) => {
     </li>
   )
 }
-export type { TreeNodeType, TreeNodePropsType, TreeViewPropsType }
+export type { TreeNodePropsType, TreeViewPropsType }
 export default TreeView
