@@ -4,8 +4,6 @@ declare namespace models {
     name: string
     isFolder?: boolean
     parent?: number
-    folderIconSettings?: folderIconType
-    itemIconSettings?: itemIconType
   }
   interface Models extends Dictionary {
     finisingStitchFrequency?: number

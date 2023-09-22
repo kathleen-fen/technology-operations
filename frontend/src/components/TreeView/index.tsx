@@ -13,13 +13,21 @@ type itemIconType = {
   icon?: string
   color?: string
 }
+type TreeNodeType = {
+  id: number
+  name: string
+  isFolder?: boolean
+  parent?: number
+  folderIconSettings?: folderIconType
+  itemIconSettings?: itemIconType
+}
 
 type TreeNodePropsType = {
-  cb: (parent?: number) => Promise<Array<models.Dictionary>>
-  node: models.Dictionary
+  cb: (parent?: number) => Promise<Array<TreeNodeType>>
+  node: TreeNodeType
 }
 type TreeViewPropsType = {
-  cb: (parent?: number) => Promise<Array<models.Dictionary>>
+  cb: (parent?: number) => Promise<Array<TreeNodeType>>
   parent?: number
   folderIconSettings?: folderIconType
   itemIconSettings?: itemIconType
@@ -33,7 +41,7 @@ const Icon = styled.div.withConfig({
   margin-right: 5px;
   color: ${(props) => props.iconColor};
 `
-
+/** Default settings for the tree */
 const defaultTreeViewProps = {
   folderIconSettings: {
     icon: 'folder',
@@ -45,7 +53,7 @@ const defaultTreeViewProps = {
     color: '#cccccc',
   },
 }
-
+/** Component renders the tree of elements  */
 const TreeView = ({
   cb,
   parent,
@@ -81,7 +89,7 @@ const TreeView = ({
         <TreeViewStyled>
           <ul>
             {treeQuery.data &&
-              treeQuery.data.map((tree: models.Dictionary) => (
+              treeQuery.data.map((tree: TreeNodeType) => (
                 <TreeNode
                   key={tree.id}
                   cb={cb}
@@ -111,11 +119,9 @@ const TreeNodeStyled = styled.div`
   display: flex;
   padding-left: 10px;
 `
-
+/** Component renders node of the tree and their children of folder is open recurcively */
 const TreeNode = ({ cb, node }: TreeNodePropsType) => {
   const [childVisible, setChildVisiblity] = useState<boolean>(false)
-
-  //const hasChild = node.children ? true : false
 
   return (
     <li>
