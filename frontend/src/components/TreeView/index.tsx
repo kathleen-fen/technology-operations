@@ -69,7 +69,7 @@ const TreeView = ({
       ...itemIconSettings,
     }
   }
-  const treeQuery = useQuery(['tree'], () => cb(parent), {
+  const treeQuery = useQuery(['tree', parent], () => cb(parent), {
     staleTime: 1000 * 60,
   })
 
@@ -99,24 +99,6 @@ const TreeView = ({
                 />
               ))}
           </ul>
-          {/* <ul>
-      {treeQuery.data.map((tree: TreeNodeType) => (
-        <TreeNode
-          key={tree.key}
-          node={{
-            ...tree,
-            folderIconSettings: {
-              ...folderIconSettings,
-              ...tree.folderIconSettings,
-            },
-            itemIconSettings: {
-              ...itemIconSettings,
-              ...tree.itemIconSettings,
-            },
-          }}
-        />
-      ))}
-    </ul> */}
         </TreeViewStyled>
       )}
     </>
