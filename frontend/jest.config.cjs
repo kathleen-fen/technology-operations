@@ -8,5 +8,6 @@ module.exports = {
       '^components/(.*)$': '<rootDir>/src/components/$1',
       '^styles/(.*)$': '<rootDir>/src/styles/$1',
     },
-    testEnvironment: 'jest-environment-jsdom'
+    testEnvironment: 'jest-environment-jsdom',
+    setupFilesAfterEnv: ['./jest.setup.js'],
   }

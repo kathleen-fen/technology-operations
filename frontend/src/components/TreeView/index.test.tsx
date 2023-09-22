@@ -14,6 +14,11 @@ describe('TreeView settings', () => {
     render(<TreeView data={treeData} />)
     let folderElement = screen.getByText('Documents').closest('div')
     expect(folderElement?.getElementsByTagName('svg')).toBeDefined()
+    expect(folderElement?.getElementsByTagName('svg')).toHaveAttribute(
+      'data-icon',
+      'folder',
+    )
+
     folderElement = screen.getByText('Desktop').closest('div')
     expect(folderElement?.getElementsByTagName('svg')).toBeDefined()
     folderElement = screen.getByText('Downloads').closest('div')
