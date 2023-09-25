@@ -31,19 +31,19 @@ databaseChangeLog:
       relativeToChangelogFile: true
   - include:
       file: db-changelog-modified_on-trigger.yaml
-      relativeToChangelogFile: true     
+      relativeToChangelogFile: true
   - include:
       file: db-changelog-pkeys.yaml
-      relativeToChangelogFile: true    
+      relativeToChangelogFile: true
   - include:
       file: db-changelog_notnull_unique.yaml
       relativeToChangelogFile: true
   - include:
-<<<<<<< Updated upstream
       file: db-changelog_users.yaml
       relativeToChangelogFile: true
-=======
+  - include:
       file: db-changelog-columns-to-models.yaml
-      relativeToChangelogFile: true    
-   
->>>>>>> Stashed changes
+      relativeToChangelogFile: true
+  - include:
+      file: db-changelog_add_deleted_field_2.yaml
+      relativeToChangelogFile: true

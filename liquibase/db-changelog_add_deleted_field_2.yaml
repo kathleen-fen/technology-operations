@@ -1,0 +1,78 @@
+databaseChangeLog:
+  - changeSet:
+      id: deleted-column-to-categories
+      author: Kate Fenchenko
+      comment: add deleted column to categories
+      changes:
+        addColumn:
+          tableName: categories
+          columns:
+            - column:
+                name: deleted
+                type: boolean
+  - changeSet:
+      id: deleted-column-to-equipment
+      author: Kate Fenchenko
+      comment: add deleted column to equipment
+      changes:
+        addColumn:
+          tableName: equipment
+          columns:
+            - column:
+                name: deleted
+                type: boolean
+  - changeSet:
+      id: deleted-column-to-fabrics
+      author: Kate Fenchenko
+      comment: add deleted column to fabrics
+      changes:
+        addColumn:
+          tableName: fabrics
+          columns:
+            - column:
+                name: deleted
+                type: boolean
+  - changeSet:
+      id: deleted-column-to-models
+      author: Kate Fenchenko
+      comment: add deleted column to models
+      changes:
+        addColumn:
+          tableName: models
+          columns:
+            - column:
+                name: deleted
+                type: boolean
+  - changeSet:
+      id: deleted-column-to-specialties
+      author: Kate Fenchenko
+      comment: add deleted column to specialties
+      changes:
+        addColumn:
+          tableName: specialties
+          columns:
+            - column:
+                name: deleted
+                type: boolean
+  - changeSet:
+      id: deleted-column-to-operations
+      author: Kate Fenchenko
+      comment: add deleted column to operations
+      changes:
+        addColumn:
+          tableName: operations
+          columns:
+            - column:
+                name: deleted
+                type: boolean
+  - changeSet:
+      id: deleted-column-to-sequences
+      author: Kate Fenchenko
+      comment: add deleted column to sequences
+      changes:
+        addColumn:
+          tableName: sequences
+          columns:
+            - column:
+                name: deleted
+                type: boolean
