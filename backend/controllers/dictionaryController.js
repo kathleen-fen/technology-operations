@@ -20,8 +20,8 @@ export const dictionaryRouteFilters = routeMap.keys();
 const checkParent = async (parentId, dictionary) => {
   if (parentId) {
     const parent = await routeMap.get(dictionary).findByPk(parentId);
-    if (!parent) {
-      const error = new HTTP400Error("Parent with such id is not found!");
+    if (!parent || !parent.isFolder) {
+      const error = new HTTP400Error("Folder with such id is not found!");
       return next(error);
     }
   }
