@@ -13,6 +13,15 @@ const Equipment = sequelize.define(
     name: {
       type: DataTypes.TEXT,
     },
+    isFolder: {
+      type: DataTypes.BOOLEAN,
+    },
+    parent: {
+      type: DataTypes.INTEGER,
+    },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+    },
   },
   {
     createdAt: "created_on",

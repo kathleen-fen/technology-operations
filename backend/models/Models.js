@@ -32,6 +32,9 @@ const Models = sequelize.define(
     parent: {
       type: DataTypes.INTEGER,
     },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+    },
   },
   {
     createdAt: "created_on",
