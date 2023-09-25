@@ -52,6 +52,7 @@ export const createItem = async (req, res, next) => {
     res.send(newItem);
   } catch (err) {
     console.log(err);
+    return next(err);
   }
 };
 
@@ -71,6 +72,7 @@ export const updateItem = async (req, res, next) => {
     res.send(updatedItem);
   } catch (err) {
     console.log(err);
+    return next(err);
   }
 };
 
@@ -112,6 +114,7 @@ export const deleteItem = async (req, res, next) => {
     return res.status(200).send(`Item deleted ${result}`);
   } catch (err) {
     console.log(err);
+    return next(err);
   }
 };
 
@@ -123,5 +126,6 @@ export const getByParent = async (req, res, next) => {
     res.send(result);
   } catch (err) {
     console.log(err);
+    return next(err);
   }
 };
