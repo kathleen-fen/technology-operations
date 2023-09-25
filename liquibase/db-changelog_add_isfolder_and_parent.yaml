@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: is-folder-and-parent-columns-to-categories
+      author: Kate Fenchenko
+      comment: add is-folder and parent columns to categories
+      changes:
+        addColumn:
+          tableName: categories
+          columns:
+            - column:
+                name: is_folder
+                type: boolean
+            - column:
+                name: parent
+                type: integer
+  - changeSet:
+      id: is-folder-and-parent-columns-to-specialties
+      author: Kate Fenchenko
+      comment: add is-folder and parent columns to specialties
+      changes:
+        addColumn:
+          tableName: specialties
+          columns:
+            - column:
+                name: is_folder
+                type: boolean
+            - column:
+                name: parent
+                type: integer
+  - changeSet:
+      id: is-folder-and-parent-columns-to-equipment
+      author: Kate Fenchenko
+      comment: add is-folder and parent columns to equipment
+      changes:
+        addColumn:
+          tableName: equipment
+          columns:
+            - column:
+                name: is_folder
+                type: boolean
+            - column:
+                name: parent
+                type: integer
+  - changeSet:
+      id: is-folder-and-parent-columns-to-fabrics
+      author: Kate Fenchenko
+      comment: add is-folder and parent columns to fabrics
+      changes:
+        addColumn:
+          tableName: fabrics
+          columns:
+            - column:
+                name: is_folder
+                type: boolean
+            - column:
+                name: parent
+                type: integer

@@ -47,3 +47,6 @@ databaseChangeLog:
   - include:
       file: db-changelog_add_deleted_field_2.yaml
       relativeToChangelogFile: true
+  - include:
+      file: db-changelog_add_isfolder_and_parent.yaml
+      relativeToChangelogFile: true
