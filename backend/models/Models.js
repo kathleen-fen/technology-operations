@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "./../connection.js";
-import { Fabrics } from "./fabrics.js";
+import { Fabrics } from "./Fabrics.js";
 
 const Models = sequelize.define(
   "models",
