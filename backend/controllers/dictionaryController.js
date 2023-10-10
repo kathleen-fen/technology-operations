@@ -8,7 +8,6 @@ import { SettingsInt } from "../models/SettingsInt.js";
 import { Models } from "../models/Models.js";
 
 import { HTTP400Error } from "../utilities/errors/Http400Error.js";
-import { sequelize } from "../connection.js";
 
 const routeMap = new Map([
   ["/models", Models],

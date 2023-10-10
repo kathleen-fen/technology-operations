@@ -33,6 +33,7 @@ const Categories = sequelize.define(
     },
   },
   {
+    underscored: true,
     createdAt: "created_on",
     updatedAt: "modified_on",
   }
