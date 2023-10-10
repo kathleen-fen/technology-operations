@@ -1,5 +1,11 @@
-import { Sequelize } from "sequelize";
 import dotenv from "dotenv";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
+const cls = require("cls-hooked");
+const namespace = cls.createNamespace("sequences-namespace");
+const Sequelize = require("sequelize");
+Sequelize.useCLS(namespace);
 
 dotenv.config();
 

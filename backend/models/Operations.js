@@ -28,6 +28,9 @@ const Operations = sequelize.define(
     kidLaborCost: {
       type: DataTypes.FLOAT,
     },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+    },
   },
   {
     createdAt: "created_on",

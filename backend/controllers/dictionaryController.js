@@ -5,15 +5,18 @@ import { Fabrics } from "../models/Fabrics.js";
 import { Specialties } from "../models/Specialties.js";
 import { Categories } from "../models/Categories.js";
 import { SettingsInt } from "../models/SettingsInt.js";
+import { Models } from "../models/Models.js";
 
 import { HTTP400Error } from "../utilities/errors/Http400Error.js";
+import { sequelize } from "../connection.js";
 
 const routeMap = new Map([
+  ["/models", Models],
   ["/fabrics", Fabrics],
   ["/equipment", Equipment],
   ["/specialties", Specialties],
   ["/categories", Categories],
-  ["/settings_int", SettingsInt],
+  ["/settings_int", SettingsInt], // TODO: add deleted, isFolder, parent
 ]);
 export const dictionaryRouteFilters = routeMap.keys();
 
@@ -84,6 +87,9 @@ const markAsDeletedById = async (id, dictionary) => {
       await markAsDeleted(children[i], dictionary);
     }
   }
+  item.deleted = true;
+
+  await item.save();
   // set deleted field to true here item.deleted = true
 };
 

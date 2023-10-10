@@ -28,6 +28,9 @@ const Categories = sequelize.define(
     ratio: {
       type: DataTypes.FLOAT,
     },
+    deleted: {
+      type: DataTypes.BOOLEAN,
+    },
   },
   {
     createdAt: "created_on",
