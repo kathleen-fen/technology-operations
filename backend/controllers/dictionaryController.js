@@ -30,12 +30,34 @@ const checkParent = async (parentId, dictionary) => {
 };
 
 const getItemsByParent = async (parentId, dictionary) => {
-  const result = await routeMap
-    .get(dictionary)
-    .findAll({ where: { parent: parentId } });
+  const result = await dictionary.findAll({ where: { parent: parentId } });
   return result;
 };
 
+const markChildrenAsDeleted = async (item, dictionary) => {
+  if (item.isFolder) {
+    const deletedItem = await dictionary.update(
+      { deleted: true },
+      {
+        where: {
+          parent: item.id,
+        },
+      }
+    );
+    console.log("nested folder: ", deletedItem);
+    const children = await getItemsByParent(item.id, dictionary);
+    console.log("children: ", children);
+    for (let i = 0; i < children.length; i++) {
+      console.log("child: ", children[i].dataValues);
+      const child = children[i].dataValues;
+      if (child.isFolder) {
+        await markChildrenAsDeleted(child, dictionary);
+      }
+    }
+  }
+};
+
+// get all elements
 export const getAll = async (req, res, _next) => {
   try {
     const result = await routeMap.get(req.baseUrl).findAll();
@@ -45,7 +67,7 @@ export const getAll = async (req, res, _next) => {
   }
 };
 
-//create new dictionary item
+// create new dictionary item
 export const createItem = async (req, res, next) => {
   try {
     //if parent is defined check if it exists in the database
@@ -58,6 +80,7 @@ export const createItem = async (req, res, next) => {
   }
 };
 
+// update element
 export const updateItem = async (req, res, next) => {
   try {
     //if parent is defined check if it exists in the database
@@ -78,24 +101,16 @@ export const updateItem = async (req, res, next) => {
   }
 };
 
-const markAsDeletedById = async (id, dictionary) => {
-  const item = await routeMap.get(dictionary).findByPk(id);
-  if (item.isFolder) {
-    const children = await getItemsByParent(item.id, dictionary);
-    for (let i = 0; i++; i < children.length) {
-      await markAsDeleted(children[i], dictionary);
-    }
-  }
-  item.deleted = true;
-
-  await item.save();
-  // set deleted field to true here item.deleted = true
-};
-
+// mark as deleted including children recursively
 export const markAsDeleted = async (req, res, next) => {
   const { id } = req.params;
+  const dictionary = routeMap.get(req.baseUrl);
   try {
-    await markAsDeletedById(id);
+    const item = await dictionary.findByPk(id);
+    item.deleted = true;
+    await item.save();
+    console.log("first: ", item.id);
+    await markChildrenAsDeleted(item, dictionary);
     res.status(200).send("Marked as deleted successfully");
   } catch (err) {
     console.log(err);
@@ -103,6 +118,7 @@ export const markAsDeleted = async (req, res, next) => {
   }
 };
 
+// delete item from database
 export const deleteItem = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -123,11 +139,13 @@ export const deleteItem = async (req, res, next) => {
   }
 };
 
+// get children
 export const getByParent = async (req, res, next) => {
   const { parent } = req.params;
   if (!parent) parent = null;
+  console.log("parent: ", parent);
   try {
-    const result = await getItemsByParent(parent, req);
+    const result = await getItemsByParent(parent, routeMap.get(req.baseUrl));
     res.send(result);
   } catch (err) {
     console.log(err);
