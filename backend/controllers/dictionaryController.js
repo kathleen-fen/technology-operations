@@ -6,6 +6,7 @@ import { Specialties } from "../models/Specialties.js";
 import { Categories } from "../models/Categories.js";
 import { SettingsInt } from "../models/SettingsInt.js";
 import { Models } from "../models/Models.js";
+import { sequelize } from "../connection.js";
 
 import { HTTP400Error } from "../utilities/errors/Http400Error.js";
 
@@ -47,6 +48,7 @@ const markChildrenAsDeleted = async (item, dictionary) => {
     console.log("nested folder: ", deletedItem);
     const children = await getItemsByParent(item.id, dictionary);
     console.log("children: ", children);
+    throw new Error();
     for (let i = 0; i < children.length; i++) {
       console.log("child: ", children[i].dataValues);
       const child = children[i].dataValues;
@@ -105,13 +107,17 @@ export const updateItem = async (req, res, next) => {
 export const markAsDeleted = async (req, res, next) => {
   const { id } = req.params;
   const dictionary = routeMap.get(req.baseUrl);
+
   try {
-    const item = await dictionary.findByPk(id);
-    item.deleted = true;
-    await item.save();
-    console.log("first: ", item.id);
-    await markChildrenAsDeleted(item, dictionary);
-    res.status(200).send("Marked as deleted successfully");
+    await sequelize.transaction(async (t) => {
+      const item = await dictionary.findByPk(id);
+      item.deleted = true;
+      await item.save();
+      console.log("first: ", item.id);
+      await markChildrenAsDeleted(item, dictionary);
+
+      res.status(200).send("Marked as deleted successfully");
+    });
   } catch (err) {
     console.log(err);
     return next(err);
