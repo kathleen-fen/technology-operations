@@ -107,21 +107,25 @@ export const markItemsAsDeleted = async (req, res, next) => {
   const dictionary = routeMap.get(req.baseUrl);
   const arrayOfIdToDelete = [];
   try {
-    const item = await dictionary.findByPk(id);
-    console.log("item: ", item);
-    arrayOfIdToDelete.push(+id);
-    await checkChildren(arrayOfIdToDelete, item, dictionary);
-    console.log("arrayOfIdToDelete; ", arrayOfIdToDelete);
-    console.log("new deleted: ", !item.dataValues.delete);
-    const deletedItems = await dictionary.update(
-      { deleted: !item.dataValues.deleted },
-      {
-        where: {
-          id: arrayOfIdToDelete,
-        },
-      }
-    );
-    res.send(deletedItems);
+    await sequelize.transaction(async (t) => {
+      const item = await dictionary.findByPk(id, {
+        lock: true,
+      });
+      console.log("item: ", item);
+      arrayOfIdToDelete.push(+id);
+      await checkChildren(arrayOfIdToDelete, item, dictionary);
+      console.log("arrayOfIdToDelete; ", arrayOfIdToDelete);
+      console.log("new deleted: ", !item.dataValues.delete);
+      const deletedItems = await dictionary.update(
+        { deleted: !item.dataValues.deleted },
+        {
+          where: {
+            id: arrayOfIdToDelete,
+          },
+        }
+      );
+      res.send(deletedItems);
+    });
   } catch (err) {
     console.log(err);
     return next(err);
