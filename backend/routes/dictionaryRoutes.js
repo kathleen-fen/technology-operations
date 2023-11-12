@@ -5,7 +5,7 @@ import {
   updateItem,
   deleteItem,
   getByParent,
-  markAsDeleted,
+  markItemsAsDeleted,
 } from "../controllers/dictionaryController.js";
 import { isAuth } from "../middleware/is_auth.js";
 
@@ -16,6 +16,6 @@ router.post("/add", isAuth, createItem);
 router.patch("/update/:id", isAuth, updateItem);
 router.delete("/delete/:id", isAuth, deleteItem);
 router.get("/:parent", getByParent);
-router.patch("/mark_as_deleted/:id", markAsDeleted);
+router.patch("/mark_as_deleted/:id", markItemsAsDeleted);
 
 export default router;

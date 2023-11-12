@@ -35,30 +35,6 @@ const getItemsByParent = async (parentId, dictionary) => {
   return result;
 };
 
-const markChildrenAsDeleted = async (item, dictionary) => {
-  if (item.isFolder) {
-    const deletedItem = await dictionary.update(
-      { deleted: true },
-      {
-        where: {
-          parent: item.id,
-        },
-      }
-    );
-    console.log("nested folder: ", deletedItem);
-    const children = await getItemsByParent(item.id, dictionary);
-    console.log("children: ", children);
-    throw new Error();
-    for (let i = 0; i < children.length; i++) {
-      console.log("child: ", children[i].dataValues);
-      const child = children[i].dataValues;
-      if (child.isFolder) {
-        await markChildrenAsDeleted(child, dictionary);
-      }
-    }
-  }
-};
-
 // get all elements
 export const getAll = async (req, res, _next) => {
   try {
@@ -103,21 +79,49 @@ export const updateItem = async (req, res, next) => {
   }
 };
 
-// mark as deleted including children recursively
-export const markAsDeleted = async (req, res, next) => {
+// find all the children recursively and add ids to arrayOfIdToDelete
+const checkChildren = async (arrayOfIdToDelete, item, dictionary) => {
+  if (item.isFolder) {
+    const children = await dictionary.findAll({
+      attributes: ["id", "isFolder"],
+      where: {
+        parent: item.id,
+      },
+    });
+    console.log("nested folder: ", children);
+    for (let i = 0; i < children.length; i++) {
+      console.log("child: ", children[i].dataValues);
+      const child = children[i].dataValues;
+      arrayOfIdToDelete.push(child.id);
+
+      if (child.isFolder) {
+        await checkChildren(arrayOfIdToDelete, child, dictionary);
+      }
+    }
+  }
+};
+
+// mark as deleted without transaction
+export const markItemsAsDeleted = async (req, res, next) => {
   const { id } = req.params;
   const dictionary = routeMap.get(req.baseUrl);
-
+  const arrayOfIdToDelete = [];
   try {
-    await sequelize.transaction(async (t) => {
-      const item = await dictionary.findByPk(id);
-      item.deleted = true;
-      await item.save();
-      console.log("first: ", item.id);
-      await markChildrenAsDeleted(item, dictionary);
-
-      res.status(200).send("Marked as deleted successfully");
-    });
+    const item = await dictionary.findByPk(id);
+    console.log("item: ", item);
+    arrayOfIdToDelete.push(+id);
+    await checkChildren(arrayOfIdToDelete, item, dictionary);
+    console.log("arrayOfIdToDelete; ", arrayOfIdToDelete);
+    console.log("new deleted: ", !item.dataValues.delete);
+    const deletedItems = await dictionary.update(
+      { deleted: !item.dataValues.deleted },
+      {
+        where: {
+          id: arrayOfIdToDelete,
+        },
+      }
+    );
+    res.send(deletedItems);
   } catch (err) {
     console.log(err);
     return next(err);
